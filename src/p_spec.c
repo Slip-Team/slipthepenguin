@@ -2275,9 +2275,9 @@ void P_PlayerInSpecialSector (player_t *player)
 		player->cheats &= ~CF_GODMODE; // on godmode cheat clearing
 	      // does not affect invulnerability
 	      if (!(leveltime&0x1f))
-		P_DamageMobjBy (player->mo, NULL, NULL, 20, mod);
+		P_DamageMobjBy (player->mo, NULL, NULL, 0, mod);
 
-	      if (player->health <= 10)
+	      if (player->health <= 10000)
 		G_ExitLevel();
 	      break;
 
