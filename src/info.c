@@ -573,7 +573,7 @@ state_t original_states[NUMSTATES] = {
   {SPR_TROO,3,3,{A_Chase},S_TROO_RUN1}, // S_TROO_RUN8
   {SPR_TROO,4,8,{A_FaceTarget},S_TROO_ATK2},  // S_TROO_ATK1
   {SPR_TROO,5,8,{A_FaceTarget},S_TROO_ATK3},  // S_TROO_ATK2
-  {SPR_TROO,6,6,{A_TroopAttack},S_TROO_RUN1}, // S_TROO_ATK3
+  {SPR_TROO,6,6,{A_CyberAttack},S_TROO_RUN1}, // S_TROO_ATK3
   {SPR_TROO,7,2,{NULL},S_TROO_PAIN2}, // S_TROO_PAIN
   {SPR_TROO,7,2,{A_Pain},S_TROO_RUN1},  // S_TROO_PAIN2
   {SPR_TROO,8,8,{NULL},S_TROO_DIE2},  // S_TROO_DIE1
