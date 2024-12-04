@@ -1,47 +1,43 @@
 ## New Features
 
-- **Custom Skill: duplicate monster spawns** setting
-- **FOV-based sky stretching** setting
-- **_Flip Levels_** setting [thanks @ceski-1]
-- **_Allow [Weapon] Switch Interruption_** setting
-- **_Message Flash_** setting
-- **Level-Stats Selection** settings
-- **Support for powerup-timer icons**
-  - Replaced `hud_stats_icons` with `hud_allow_icons` [1]
-- **Support for crouching-player sprites**
-  - Allowed crouching when using the chasecam if said sprites are provided
-- **Quit Sound** setting, enabled by default
+- **_Slow Motion_ button**
+- **_Group Repeated Messages_ setting**
+- **_'TRAILS'_ cheat**, to show hitscan trails
+- **Color settings** from International Doom
 
 ## Changes
 
-- **Improved loading speed when rewinding**
-- **Autosave improvements:**
-  - Separated level-end autosaves and periodic autosaves into two settings,
-    enabled the former by default, and gave menu items to both
-  - Autosaves are now prefixed as per the executable's name
-- **NUGHUD:**
-  - Replaced `_gap` property of bars with `_xstep` and `_ystep`, allowing for vertical bars [2]
-  - Extended bars' `_ups` range to [10, 10000]
-  - Extended `nughud_viewoffset` range to [-32, 32]
-- **_Bloodier Gibbing_ setting now adds crushing effects**
-- **Extended _Blink [Automap] Marks_ feature to also highlight keyed lines**
-- **Freecam speed is now mostly independent of game speed**
-- **Improved interpolation of chasecam speed effect**
-- **Made `force_flip_pan` affect the _OpenAL 3D_ sound module** [by @ceski-1]
-- **Renamed _ZDoom-like Item Drops_ (`zdoom_item_drops`) to _Toss Items Upon Death_ (`tossdrop`)** [1]
-- **Removed _'BABYMODE'_ cheat**
-- **Removed _Upward Message Scrolling_ menu item**
+- **Merged changes from [Woof! 15.0.0](https://github.com/fabiangreffrath/woof/releases/tag/woof_15.0.0)**, note:
+  - NUGHUD now partially uses SBARDEF as its backend, which may cause some rendering differences
+  - Integrated periodic auto saves into the save/load menus
+  - Maintained key blink, message list, message duration, and chat-message duration settings [1]
+  - Turned optional vertical layout for _Stats_ and _Coordinates_ widgets into SBARDEF fields
+  - Removed `show_ssg` (now default behavior), `alt_arms` and `hud_highlight_weapon` settings
+  - Renamed `#_bobbing_percentage` to `#_bobbing_pct` [2]
+  - Renamed `show_berserk` to `sts_show_berserk` [2]
+  - Moved `sts_show_berserk` menu item to _Status Bar/HUD_ setup menu
+  - Revised the descriptions of many of Nugget's new CVARs
+- **Messages in the message list now have individual durations**
+- **Made the minimap customizable through SBARDEF and NUGHUD**
+- **Improved FOV-based sky stretching**
+- **Smoother FOV effects**
+- **Allowed orbiting around freecam mobj**
+- **Replaced `translucent_pspr(_pct)` with `pspr_translucency_pct`** [2]
+- **Made _Screen Wipe Speed Percentage_ setting affect the _Fizzle_ fade**
+- **Raised maximum _Rewind Depth_ to 3000**
+- **Gave shadow to the _Pause_ graphic when using _HUD/Menu Shadows_**
+- **Removed _Physical [Weapon] Recoil_ menu item**
 
 ## Bug Fixes
 
-- **Crash when loading status bars taller than 32px**
-- **_'FAST'_ cheat not fully toggling fast monsters outside of custom skill**
-- **Fallback status-bar Berserk graphic not taking NUGHUD Ammo alignment into account**
-- **Tag Finder not highlighting hidden lines**
-- **Last-weapon button being affected by _Skip Ammoless Weapons_ setting**
-- **Horizontal-autoaim indicators reacting to fuzzy targets regardless of detection setting**
-- **_[Crosshair] Translucency_ menu item not being disabled when the crosshair were disabled**
+- **Desync involving lost-soul charge attack**
+- **Potential recursive spawning of blood splats when crushing with _Bloodier Gibbing_ enabled** (fixes `strg.wad`)
+- **FOV going below 1 degree and beyond 180 degrees**
+- **_Double autoaim range_ setting doubling range of BFG tracers**
+- **FOV effects disabling interpolation of weapon sprites**
+- **Crash when loading WADs with empty lumps between `C_#` markers** (fixes `nt_rc1.wad`)
+- **Shadows not being drawn for HUD icons when using Boom font**
 
-**[1].** This will affect existing config files.
+**[1].** Not necessarily with the same CVARs; existing config files may be affected.
 
-**[2].** This may affect existing NUGHUDs.
+**[2].** This will affect existing config files.

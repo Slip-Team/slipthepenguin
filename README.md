@@ -51,6 +51,8 @@ For these settings, their CVAR names are provided alongside the _CFG-only_ label
   - _Previous/Next Weapon_ to adjust the camera's movement speed
   - Rapid _Strafe On_ double-press to center the camera vertically
 - **_Chasecam_** [i.b. ZDoom]
+- **Slow Motion** button
+- **Zoom** button
 - **_Background for all menus_** setting
 - **_No palette tint in menus_** setting [i.b. Crispy Doom]
 - **_HUD/Menu Shadows_** setting (translucency determined by the CFG-only `hud_menu_shadows_filter_pct` CVAR) [i.b. CRL]
@@ -63,16 +65,13 @@ For these settings, their CVAR names are provided alongside the _CFG-only_ label
 - Toggle for **Diminished Lighting** (CFG-only: `diminished_lighting`)
 - **_Screen Wipe speed percentage_** setting
 - **_Alternative Intermission Background_** setting, to replace the intermission graphic with a darkened rotating camera view
+- **Color settings** [p.f. International Doom]
 - **_Sound Clipping Distance_** selection, to optionally double the distance at which sound effects become audible
 - **_One-Key Quick Save/Load_** setting, to skip the confirmation prompt
-- **Autosaving**
-  - Autosaves are meant to serve as backups: they're stored in the same folder as manual saves,
-    aren't accessible in-game, and lack preview snapshots, but otherwise function like normal saves.
-    They must be renamed to appear in the save/load menus.
+- **_Auto Save Interval_** setting, for periodic auto saves
 - **Rewinding** [i.b. DSDA-Doom]
 - **_Play Internal Demos_** setting
 - **_Quick "Quit Game"_** setting, to skip the confirmation prompt [p.f. Crispy Doom]
-- **Quit Sound** setting, independent of ENDOOM and enabled by default (CFG-only: `quit_sound`)
 - Toggle for **_Weapon Flash Lighting_** [p.f. Crispy Doom]
 - Toggle for **_Weapon Flash Sprite_** [p.f. Crispy Doom]
 - Toggle for **_Invulnerability Colormap_** [p.f. Crispy Doom]
@@ -80,42 +79,42 @@ For these settings, their CVAR names are provided alongside the _CFG-only_ label
 ### Weapons
 
 - **Extended _View/Weapon Bob_ percentages**
-- Restored **_Weapon Recoil_** menu item
 - **_No Horizontal Autoaim_** setting
 - **_Switch [Weapon] on Pickup_** setting
 - **_Allow [Weapon] Switch Interruption_** setting
 - **_Prev/Next Skip Ammoless Weapons_** setting, to make the previous/next-weapon buttons skip weapons with insufficient ammo
-- Key to **equip last used weapon** [i.b. Cherry Doom]
 - **_Horizontal_ Weapon Centering** setting [i.b. DSDA-Doom]
 - **Always Bob** setting (CFG-only: `always_bob`)
 - **_Bobbing Styles_** selection [p.f. Zandronum]
 - **_Weapon Inertia_** setting (scale determined by the CFG-only `weapon_inertia_scale_pct` CVAR) [by _ceski_]
 - **_Weapon Squat Upon Landing_** setting [p.f. Crispy Doom]
 - **_Translucent Flashes_** setting (translucency determined by the CFG-only `translucent_pspr_pct` CVAR) [i.b. Crispy Doom]
-- **Show Berserk availability** setting [partially p.f. Crispy Doom]
 - **"Correct" first person sprite centering** setting, to toggle the 1px first-person sprite misalignment (CFG-only: `sx_fix`)
 
 ### Status Bar/HUD
 
-- **Nugget HUD**, highly customizable through means of the **`NUGHUD` lump** (see `docs/nughud.md`)
+- **NUGHUD**, an alternative lump for HUD customization (see `docs/nughud.md`)
+- **SBARDEF:**
+  - Optional vertical layout for _Stats_ and _Coordinates_ widgets
+  - Chat hack to move it vertically based on the height of the message list
 - **Crosshair:**
   - Translucency;
   - Vertical-only target lock-on;
   - Horizontal-autoaim indicators;
   - Option to account for fuzzy targets [i.b. From Doom With Love];
-  - Dedicated toggle key.
+  - Dedicated toggle button.
 - **Secret count in "secret revealed" message** [p.f. Crispy Doom]
 - **Show Save Messages** setting (CFG-only: `show_save_messages`)
 - **_Milestone-Completion Announcements_** setting, to report completion of milestones (e.g. all items acquired)
 - **_Message Flash_** setting
-- Restored **_Upward Message Scrolling_** setting, and enabled it by default (CFG-only: `hud_msg_scrollup`)
-- **Restored various message-related menu items**
+- **_Message Lines_** setting (scrolling direction determined by the CFG-only `hud_msg_scrollup` CVAR)
+- **_Group Repeated Messages_** setting [i.b. Doom Retro]
+- **_(Chat) Message Duration_** settings
 - **_Show Powerup Timers_** setting
-- **Show SSG availability in the Shotgun slot of the Arms widget** setting (CFG-only: `show_ssg`) [p.f. Crispy Doom]
-- **_Level-Stats Format_** settings [i.b. Crispy Doom]
+- **_Blink Missing Keys_** setting [partially p.f. Crispy Doom]
+- **_Berserk display when using Fist_** setting [partially p.f. Crispy Doom]
+- **_Automap Level Stats Format_** setting
 - **Level-Stats Selection** settings (CFG-only: `hud_stats_#[_map]`)
-- **_Highlight Current/Pending Weapon_** setting [i.b. PSX Doom]
-- **_Alternative Arms Display_** setting, to show the Chainsaw or SSG's availability on the Arms widget in place of the trivial Pistol
 - **Event Timers:**
   - _Teleport Timer_ [i.b. Crispy Doom];
   - _Key-Pickup Timer_ [same as above].
@@ -129,9 +128,9 @@ For these settings, their CVAR names are provided alongside the _CFG-only_ label
 ### Automap
 
 - **Minimap mode** [i.b. DSDA-Doom]
-- Key to **_Highlight Points of Interest_**; marks and keyed lines (default: <kbd>B</kbd>)
-- **_Tag Finder_**: Position the Automap pointer over a sector and press the _Tag Finder_ key to highlight its activator line(s), and vice versa [p.f. PrBoomX]
-- Key to **_Teleport to Automap pointer_**
+- Button to **_Highlight Points of Interest_**; marks and keyed lines (default: <kbd>B</kbd>)
+- **_Tag Finder_**: Position the Automap pointer over a sector and press the _Tag Finder_ button to highlight its activator line(s), and vice versa [p.f. PrBoomX]
+- Button to **_Teleport to Automap pointer_**
 - **_Show Thing Hitboxes_** setting
 - **Color for trigger lines**, used with IDDT (CFG-only: `mapcolor_trig`)
 
@@ -175,11 +174,12 @@ All of these are CFG-only, so their CVAR names are included.
 - **_'VALIANT'_** for fast weapons [i.b. ZDoom]
   - **_'BOBBERS'_** serves as a shortcut to toggle the two cheats mentioned above, plus IDFA
 - **_'GIBBERS'_** to force gibbing on dying enemies, independently of damage dealt
-- **_'IDFLY'_** to fly (uses jumping/crouching keys) [i.b. PrBoom+, ZDoom]
+- **_'IDFLY'_** to fly (uses jumping/crouching buttons) [i.b. PrBoom+, ZDoom]
 - **_'SUMMON'_** to spawn an actor based on its type index [i.b. ZDoom, PrBoomX]
 - **_'IDDF'_** to find a key on the Automap
 - **_'RESURRECT' / 'IDRES'_** to resurrect the player without toggling IDDQD [i.b. ZDoom]
 - **_'LINETARGET'_** to give some info on the player's linetarget [i.b. ZDoom]
+- **_'TRAILS'_** to show hitscan trails
 - **_'MDK'_** to perform a hitscan attack of 1-million damage [i.b. ZDoom]
 - **_'SAITAMA'_** to enable the MDK Fist
 - **_'BOOMCAN'_** for explosive hitscan attacks
@@ -198,11 +198,10 @@ For more details, see the _New Nugget Doom cheats_ section of `docs/cheats.md`.
 
 - **Customizable skill level**, supporting all vanilla settings and a new one for duplicate monster spawns
 - **SDL render driver** setting (CFG-only: `sdl_renderdriver`) [p.f. Woof! 14.0.0]
-- Key to **toggle zoom**
 - **Setting of savegame and screenshot paths in config file** (CFG-only: `savegame_dir` and `screenshot_dir`)
 - **Keep palette changes in screenshots** setting (CFG-only: `screenshot_palette`)
 - **Allowed mouselook while dead**
-- **Interactive character cast** (Turn keys to rotate enemy, Run key to gib, Strafe keys to skip) [p.f. Crispy Doom]
+- **Interactive character cast** (Turn buttons to rotate enemy, Run button to gib, Strafe buttons to skip) [p.f. Crispy Doom]
 - **Support for optional sounds:** [partially p.f. Crispy Doom]
   - Jumping: `DSPLJUMP`;
   - Landing: `DSPLLAND`;
@@ -217,6 +216,7 @@ For more details, see the _New Nugget Doom cheats_ section of `docs/cheats.md`.
 - Toggle to **disable the Killough-face easter egg** (CFG-only: `no_killough_face`)
 - Toggle to **allow chat in singleplayer** (CFG-only: `sp_chat`)
 - Made `force_flip_pan` affect the _OpenAL 3D_ sound module [by _ceski_]
+- Restored menu items for various Woof settings
 - Restored `-cdrom` command-line parameter
 - Decreased minimum window size to 200p (240p with aspect-ratio correction)
 
@@ -255,6 +255,8 @@ The following build system and libraries need to be installed:
  * [SDL2_net](https://github.com/libsdl-org/SDL_net)
  * [openal-soft](https://github.com/kcat/openal-soft) (>= 1.22.0 for PC Speaker emulation)
  * [libsndfile](https://github.com/libsndfile/libsndfile) (>= 1.1.0 for MPEG support)
+ * [libebur128](https://github.com/jiixyj/libebur128) (>= 1.2.0)
+ * [yyjson](https://github.com/ibireme/yyjson) (>= 0.10.0, optional)
  * [fluidsynth](https://github.com/FluidSynth/fluidsynth) (>= 2.2.0, optional)
  * [libxmp](https://github.com/libxmp/libxmp) (optional)
  
@@ -323,7 +325,7 @@ Copyright:
  © 2020 JadingTsunami;  
  © 2020-2024 Fabian Greffrath;  
  © 2020-2024 Roman Fomin;  
- © 2021 Ryan Krafnick;  
+ © 2021-2022 Ryan Krafnick;  
  © 2021-2024 Alaux;  
  © 2022 Julia Nechaevskaya;  
  © 2022-2024 ceski;  
@@ -331,16 +333,12 @@ Copyright:
  © 2023 liPillON.   
 License: [GPL-2.0+](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 
-Files: `src/beta.h`  
-Copyright: © 2001-2019 Contributors to the Freedoom project.  
-License: [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)
-
-Files: `src/dogs.h`  
+Files: `src/i_flickstick.*, src/i_gyro.*`  
 Copyright:  
- © 2017 Nash Muhandes;  
- © apolloaiello;  
- © TobiasKosmos.  
-License: [CC-BY-3.0](https://creativecommons.org/licenses/by/3.0/) and [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/)
+ © 2018-2021 Julian "Jibb" Smart;  
+ © 2021-2024 Nicolas Lessard;  
+ © 2024 ceski.  
+License: [MIT](https://opensource.org/licenses/MIT)
 
 Files: `src/nano_bsp.*`  
 Copyright: © 2023 Andrew Apted.  
@@ -364,6 +362,35 @@ Copyright:
  © 2013 James Haley et al.  
 License: [GPL-3.0+](https://www.gnu.org/licenses/gpl-3.0)
 
+Files: `base/all-all/sprites/pls*`  
+Copyright: © 2001-2019 Contributors to the Freedoom project.  
+License: [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)
+
+Files: `base/all-all/sprites/ngcha0.png, base/all-all/sprites/ngcla0.png, base/all-all/sprites/ngtr*0.png`  
+Copyright: © 2023-2024 Korp.  
+License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+
+Files: `base/all-all/dsdg*, base/all-all/sprites/dog*`  
+Copyright:  
+ © 2017 Nash Muhandes;  
+ © apolloaiello;  
+ © TobiasKosmos.  
+License: [CC-BY-3.0](https://creativecommons.org/licenses/by/3.0/) and [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/)
+
+Files: `base/all-all/sm*.png`  
+Copyright: © 2024 Julia Nechaevskaya.  
+License: [CC-BY-3.0](https://creativecommons.org/licenses/by/3.0/)
+
+Files: `base/all-all/sbardef.lmp`  
+Copyright:  
+ © 2024 Ethan Watson.  
+License: [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/)
+
+Files: `base/all-all/dmxopl.op2`  
+Copyright:  
+ © 2017 Shannon Freeman.  
+License: [MIT](https://opensource.org/licenses/MIT)
+
 Files: `cmake/FindSDL2.cmake, cmake/FindSDL2_net.cmake`  
 Copyright: © 2018 Alex Mayfield.  
 License: [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)
@@ -371,12 +398,6 @@ License: [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)
 Files: `data/nugget-doom.ico, data/nugget-doom.png, src/icon.c, data/setup.ico, data/nugget-doom-setup.png, setup/setup_icon.c`  
 Copyright: © 2022 Korp.  
 License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-
-Files: `miniz/*`  
-Copyright:  
- © 2010-2014 Rich Geldreich and Tenacious Software LLC;  
- © 2013-2014 RAD Game Tools and Valve Software.  
-License: [MIT](https://opensource.org/licenses/MIT)
 
 Files: `opl/*`  
 Copyright:  
@@ -397,5 +418,35 @@ Copyright:
  © 2005-2017 Simon Howard.  
 License: [GPL-2.0+](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 
-Files: `win32/win_opendir.*`  
+Files: `third-party/md5/*`  
 License: public-domain
+
+Files: `third-party/miniz/*`  
+Copyright:  
+ © 2010-2014 Rich Geldreich and Tenacious Software LLC;  
+ © 2013-2014 RAD Game Tools and Valve Software.  
+License: [MIT](https://opensource.org/licenses/MIT)
+
+Files: `third-party/pffft/*`  
+Copyright:  
+ © 2004 The University Corporation for Atmospheric Research ("UCAR");  
+ © 2013 Julien Pommier.  
+License: [FFTPACK License](https://bitbucket.org/jpommier/pffft/src/master/pffft.h)
+
+Files: `third-party/sha1/*`  
+Copyright:  
+ © 1998-2001 Free Software Foundation, Inc.;  
+ © 2005-2014 Simon Howard.  
+License: [GPL-2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+
+Files: `third-party/spng/*`  
+Copyright: © 2018-2023 Randy.  
+License: [BSD-2-Clause](https://opensource.org/license/bsd-2-clause)
+
+Files: `third-party/yyjson/*`  
+Copyright © 2020 YaoYuan.  
+License: [MIT](https://opensource.org/licenses/MIT)
+
+Files: `win32/win_opendir.*`  
+Copyright: © 2019 win32ports.  
+License: [MIT](https://opensource.org/licenses/MIT)
