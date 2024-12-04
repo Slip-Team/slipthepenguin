@@ -1536,7 +1536,7 @@ mobjinfo_t original_mobjinfo[NUMMOBJTYPES] = {
     100,    // mass
     0,    // damage
     sfx_bgact,    // activesound
-    MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL, // flags
+    MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_FLOAT|MF_NOGRAVITY, // flags
     S_TROO_RAISE1   // raisestate
   },
 
