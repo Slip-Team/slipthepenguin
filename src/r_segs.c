@@ -276,7 +276,245 @@ void R_RenderMaskedSegRange(drawseg_t *ds, int x1, int x2)
 //   increasing the precision of various renderer variables, and,
 //   possibly, creating a noticable performance penalty.
 //
+void R_RenderThickSideRange (drawseg_t* ds,
+                             int        x1,
+                             int        x2,
+                             ffloor_t*  ffloor)
+{
+    unsigned        index;
+    column_t*       col;
+    int             lightnum;
+    int             texnum;
+    sector_t        tempsec;
+    int             templight;
+    int             i;
 
+    void (*colfunc_2s) (column_t*);
+
+    // Calculate light table.
+    // Use different light tables
+    //   for horizontal / vertical / diagonal. Diagonal?
+    // OPTIMIZE: get rid of LIGHTSEGSHIFT globally
+
+    curline = ds->curline;
+    frontsector = curline->frontsector;
+    backsector = curline->backsector;
+    texnum = texturetranslation[sides[ffloor->master->sidenum[0]].midtexture];
+
+    colfunc = basecolfunc;
+
+    if(ffloor->flags & FF_TRANSLUCENT)
+    {
+      dc_transmap = ((1)<<FF_TRANSSHIFT) - 0x10000 + transtables;
+      colfunc = fuzzcolfunc;
+    }
+
+    //SoM: Moved these up here so they are available for my lightlist calculations
+    rw_scalestep = ds->scalestep;
+    spryscale = ds->scale1 + (x1 - ds->x1)*rw_scalestep;
+
+    dc_numlights = 0;
+    if(frontsector->numlights)
+    {
+      dc_numlights = frontsector->numlights;
+      if(dc_numlights >= dc_maxlights)
+      {
+        dc_maxlights = dc_numlights;
+        dc_lightlist = realloc(dc_lightlist, sizeof(r_lightlist_t) * dc_maxlights);
+      }
+
+      for(i = 0; i < dc_numlights; i++)
+      {
+        dc_lightlist[i].heightstep = -FixedMul (rw_scalestep, (frontsector->lightlist[i].height - viewz) >> 4);
+        dc_lightlist[i].height = (centeryfrac>>4) - FixedMul((frontsector->lightlist[i].height - viewz) >> 4, spryscale) - dc_lightlist[i].heightstep;
+        if(frontsector->lightlist[i].caster && frontsector->lightlist[i].caster->flags & FF_SOLID)
+        {
+          dc_lightlist[i].botheightstep = -FixedMul (rw_scalestep, (*frontsector->lightlist[i].caster->bottomheight - viewz) >> 4);
+          dc_lightlist[i].botheight = (centeryfrac>>4) - FixedMul((*frontsector->lightlist[i].caster->bottomheight - viewz) >> 4, spryscale) - dc_lightlist[i].botheightstep;
+          dc_lightlist[i].flags = frontsector->lightlist[i].caster->flags;
+        }
+        else
+          dc_lightlist[i].flags = 0;
+
+        dc_lightlist[i].lightlevel = frontsector->lightlist[i].lightlevel;
+        dc_lightlist[i].extra_colormap = frontsector->lightlist[i].extra_colormap;
+        dc_lightlist[i].flags = frontsector->lightlist[i].caster ? frontsector->lightlist[i].caster->flags : 0;
+      }
+    }
+    else
+    {
+      //SoM: Get correct light level!
+      lightnum = (R_FakeFlat(frontsector, &tempsec, &templight, &templight, false)
+                  ->lightlevel >> LIGHTSEGSHIFT)+extralight;
+
+      if (frontsector->extra_colormap) ;
+      else if (curline->v1->y == curline->v2->y)
+          lightnum--;
+      else if (curline->v1->x == curline->v2->x)
+          lightnum++;
+
+      if (lightnum < 0)
+          walllights = scalelight[0];
+      else if (lightnum >= LIGHTLEVELS)
+          walllights = scalelight[LIGHTLEVELS-1];
+      else
+          walllights = scalelight[lightnum];
+    }
+
+    maskedtexturecol = ds->thicksidecol;
+
+    mfloorclip = ds->sprbottomclip;
+    mceilingclip = ds->sprtopclip;
+    dc_texheight = textureheight[texnum] >> FRACBITS;
+
+    dc_texturemid = *ffloor->topheight - viewz;
+
+    dc_texturemid += sides[ffloor->master->sidenum[0]].rowoffset;
+
+    if (fixedcolormap)
+        dc_colormap = fixedcolormap;
+
+    //faB: handle case where multipatch texture is drawn on a 2sided wall, multi-patch textures
+    //     are not stored per-column with post info anymore in Doom Legacy
+    if (textures[texnum]->patchcount==1)
+        colfunc_2s = R_DrawMaskedColumn;                    //render the usual 2sided single-patch packed texture
+    else {
+        colfunc_2s = R_Render2sidedMultiPatchColumn;        //render multipatch with no holes (no post_t info)
+        column2s_length = textures[texnum]->height;
+    }
+
+    // draw the columns
+    for (dc_x = x1 ; dc_x <= x2 ; dc_x++)
+    {
+      if(maskedtexturecol[dc_x] != MAXSHORT)
+      {
+        // SoM: New code does not rely on r_drawColumnShadowed_8 which
+        // will (hopefully) put less strain on the stack.
+        if(dc_numlights)
+        {
+          lighttable_t** xwalllights;
+          fixed_t        height;
+          fixed_t        bheight = 0;
+          int            solid = 0;
+          int            lighteffect = 0;
+
+          sprtopscreen = windowtop = (centeryfrac - FixedMul(dc_texturemid, spryscale));
+          sprbotscreen = windowbottom = FixedMul(*ffloor->topheight - *ffloor->bottomheight, spryscale) + sprtopscreen;
+          dc_iscale = 0xffffffffu / (unsigned)spryscale;
+            
+          // draw the texture
+          col = (column_t *)((byte *)R_GetColumn(texnum,maskedtexturecol[dc_x]) - 3);
+
+          for(i = 0; i < dc_numlights; i++)
+          {
+            int lightnum;
+
+            lighteffect = !(dc_lightlist[i].flags & FF_NOSHADE);
+            if(lighteffect)
+            {
+              lightnum = (dc_lightlist[i].lightlevel >> LIGHTSEGSHIFT)+extralight;
+
+              if (dc_lightlist[i].extra_colormap);
+              else if (curline->v1->y == curline->v2->y)
+                  lightnum--;
+              else if (curline->v1->x == curline->v2->x)
+                  lightnum++;
+
+              if (lightnum < 0)
+                  xwalllights = scalelight[0];
+              else if (lightnum >= LIGHTLEVELS)
+                  xwalllights = scalelight[LIGHTLEVELS-1];
+              else
+                  xwalllights = scalelight[lightnum];
+
+              index = spryscale>>LIGHTSCALESHIFT;
+
+              if (index >=  MAXLIGHTSCALE )
+                  index = MAXLIGHTSCALE-1;
+
+              if(dc_lightlist[i].extra_colormap && !fixedcolormap)
+                dc_lightlist[i].rcolormap = dc_lightlist[i].extra_colormap + (xwalllights[index] - colormaps);
+              else if(!fixedcolormap)
+                dc_lightlist[i].rcolormap = xwalllights[index];
+              else
+                dc_lightlist[i].rcolormap = fixedcolormap;
+            }
+
+            solid = dc_lightlist[i].flags & FF_CUTSIDES;
+
+            dc_lightlist[i].height += dc_lightlist[i].heightstep;
+            height = dc_lightlist[i].height << 4;
+
+            if(solid)
+            {
+              dc_lightlist[i].botheight += dc_lightlist[i].botheightstep;
+              bheight = dc_lightlist[i].botheight << 4;
+            }
+
+            if(height <= windowtop)
+            {
+              if(lighteffect)
+                dc_colormap = dc_lightlist[i].rcolormap;
+              if(solid && windowtop < bheight)
+                windowtop = bheight;
+              continue;
+            }
+
+            windowbottom = height;
+            if(windowbottom >= sprbotscreen)
+            {
+              windowbottom = sprbotscreen;
+              colfunc_2s (col);
+              for(i++ ; i < dc_numlights; i++)
+              {
+                dc_lightlist[i].height += dc_lightlist[i].heightstep;
+                if(solid)
+                  dc_lightlist[i].botheight += dc_lightlist[i].botheightstep;
+              }
+              continue;
+            }
+            colfunc_2s (col);
+            if(solid)
+              windowtop = bheight;
+            else
+              windowtop = windowbottom + 1;
+            if(lighteffect)
+              dc_colormap = dc_lightlist[i].rcolormap;
+          }
+          windowbottom = sprbotscreen;
+          if(windowtop < windowbottom)
+            colfunc_2s (col);
+
+          spryscale += rw_scalestep;
+          continue;
+        }
+
+        // calculate lighting
+        if (!fixedcolormap)
+        {
+            index = spryscale>>LIGHTSCALESHIFT;
+
+            if (index >=  MAXLIGHTSCALE )
+                index = MAXLIGHTSCALE-1;
+                
+            dc_colormap = walllights[index];
+            if(frontsector->extra_colormap)
+                dc_colormap = frontsector->extra_colormap + (dc_colormap - colormaps);
+        }
+
+        sprtopscreen = windowtop = (centeryfrac - FixedMul(dc_texturemid, spryscale));
+        sprbotscreen = windowbottom = FixedMul(*ffloor->topheight - *ffloor->bottomheight, spryscale) + sprtopscreen;
+        dc_iscale = 0xffffffffu / (unsigned)spryscale;
+            
+        // draw the texture
+        col = (column_t *)((byte *)R_GetColumn(texnum,maskedtexturecol[dc_x]) - 3);
+            
+        colfunc_2s (col);
+        spryscale += rw_scalestep;
+      }
+    }
+    colfunc = basecolfunc;
+}
 static int max_rwscale = 64 * FRACUNIT;
 static int heightbits  = HEIGHTBITS;
 static int heightunit  = HEIGHTUNIT;
