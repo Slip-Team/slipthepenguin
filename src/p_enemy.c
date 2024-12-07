@@ -2791,7 +2791,7 @@ void A_SpawnFly(mobj_t *mo)
 
 void A_PlayerScream(mobj_t *mo)
 {
- players->mo->momz = 1000*FRACUNIT/mo->info->mass;
+ players->mo->momz = 10000*FRACUNIT/mo->info->mass;
  int sound = sfx_pldeth;  // Default death sound.
   if (gamemode != shareware && mo->health < -50) // killough 12/98
     sound = sfx_pdiehi;   // IF THE PLAYER DIES LESS THAN -50% WITHOUT GIBBING
