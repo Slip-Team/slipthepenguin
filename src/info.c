@@ -1536,7 +1536,7 @@ mobjinfo_t original_mobjinfo[NUMMOBJTYPES] = {
     100,    // mass
     0,    // damage
     sfx_bgact,    // activesound
-    MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_FLOAT|MF_NOGRAVITY, // flags
+    MF_SOLID|MF_SHOOTABLE|MF_COUNTKILL|MF_FLOAT|MF_NOGRAVITY|MF_SPAWNCEILING, // flags
     S_TROO_RAISE1   // raisestate
   },
 
@@ -2108,7 +2108,7 @@ mobjinfo_t original_mobjinfo[NUMMOBJTYPES] = {
     100,    // mass
     20,   // damage
     sfx_None,   // activesound
-    MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_NOGRAVITY,   // flags
+    MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_BOUNCE,   // flags
     S_NULL    // raisestate
   },
 
