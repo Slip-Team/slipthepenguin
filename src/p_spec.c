@@ -2621,6 +2621,91 @@ void P_SpawnSpecials (void)
   else             { complete_milestones |=  MILESTONE_SECRETS; }
 
   P_RemoveAllActiveCeilings();  // jff 2/22/98 use killough's scheme
+#ifdef FAKEFLOORS
+//SoM: 3/23/2000: Adds a sectors floor and ceiling to a sector's ffloor list
+void P_AddFakeFloor(sector_t* sec, sector_t* sec2, line_t* master, int flags);
+void P_AddFFloor(sector_t* sec, ffloor_t* ffloor);
+
+
+void P_AddFakeFloor(sector_t* sec, sector_t* sec2, line_t* master, int flags)
+{
+  ffloor_t*      ffloor;
+
+  //Add the floor
+  ffloor = Z_Malloc(sizeof(ffloor_t), PU_LEVEL, NULL);
+  ffloor->secnum = sec2 - sectors;
+  ffloor->target = sec;
+
+  // Swaps floor/ceiling Tails
+/*
+  ffloor->bottomheight     = &sec2->ceilingheight;
+  ffloor->bottompic        = &sec2->ceilingpic;
+  ffloor->bottomlightlevel = &sec2->lightlevel;
+  ffloor->bottomxoffs      = &sec2->ceiling_xoffs;
+  ffloor->bottomyoffs      = &sec2->ceiling_yoffs;
+
+  //Add the ceiling
+  ffloor->topheight     = &sec2->floorheight;
+  ffloor->toppic        = &sec2->floorpic;
+  ffloor->toplightlevel = &sec2->lightlevel;
+  ffloor->topxoffs      = &sec2->floor_xoffs;
+  ffloor->topyoffs      = &sec2->floor_yoffs;
+*/
+
+  ffloor->bottomheight     = &sec2->floorheight;
+  ffloor->bottompic        = &sec2->floorpic;
+  ffloor->bottomlightlevel = &sec2->lightlevel;
+  ffloor->bottomxoffs      = &sec2->floor_xoffs;
+  ffloor->bottomyoffs      = &sec2->floor_yoffs;
+  ffloor->special          = &sec2->special; // Tails
+
+  //Add the ceiling
+  ffloor->topheight     = &sec2->ceilingheight;
+  ffloor->toppic        = &sec2->ceilingpic;
+  ffloor->toplightlevel = &sec2->lightlevel;
+  ffloor->topxoffs      = &sec2->ceiling_xoffs;
+  ffloor->topyoffs      = &sec2->ceiling_yoffs;
+
+  ffloor->flags = flags;
+  ffloor->master = master;
+
+  if(sec2->numattached == 0)
+  {
+    sec2->attached = malloc(sizeof(int));
+    sec2->attached[0] = sec - sectors;
+    sec2->numattached = 1;
+  }
+  else
+  {
+    sec2->attached = realloc(sec2->attached, sizeof(int) * (sec2->numattached + 1));
+    sec2->attached[sec2->numattached] = sec - sectors;
+    sec2->numattached ++;
+  }
+
+  P_AddFFloor(sec, ffloor);
+}
+
+
+
+void P_AddFFloor(sector_t* sec, ffloor_t* ffloor)
+{
+  ffloor_t* rover;
+
+  if(!sec->ffloors)
+  {
+    sec->ffloors = ffloor;
+    ffloor->next = 0;
+    ffloor->prev = 0;
+    return;
+  }
+
+  for(rover = sec->ffloors; rover->next; rover = rover->next);
+
+  rover->next = ffloor;
+  ffloor->prev = rover;
+  ffloor->next = 0;
+}
+#endif
 
   P_RemoveAllActivePlats();     // killough
 
@@ -2653,7 +2738,36 @@ void P_SpawnSpecials (void)
         for (s = -1; (s = P_FindSectorFromLineTag(lines+i,s)) >= 0;)
           sectors[s].heightsec = sec;
         break;
+	      
+#ifdef FAKEFLOORS
+          case 281:
+            sec = sides[*lines[i].sidenum].sector-sectors;
+            for (s = -1; (s = P_FindSectorFromLineTag(lines+i,s)) >= 0;)
+              P_AddFakeFloor(&sectors[s], &sectors[sec], lines+i, FF_EXISTS|FF_SOLID|FF_RENDERALL|FF_CUTLEVEL);
+            break;
 
+          case 289:
+            sec = sides[*lines[i].sidenum].sector-sectors;
+            for (s = -1; (s = P_FindSectorFromLineTag(lines+i,s)) >= 0;)
+              P_AddFakeFloor(&sectors[s], &sectors[sec], lines+i, FF_EXISTS|FF_SOLID|FF_RENDERALL|FF_NOSHADE|FF_CUTLEVEL);
+            break;
+
+          case 300:
+            sec = sides[*lines[i].sidenum].sector-sectors;
+            for (s = -1; (s = P_FindSectorFromLineTag(lines+i,s)) >= 0;)
+              P_AddFakeFloor(&sectors[s], &sectors[sec], lines+i, FF_EXISTS|FF_SOLID|FF_RENDERALL|FF_NOSHADE|FF_TRANSLUCENT);
+            break;
+          case 301: // walk through trans Tails
+            sec = sides[*lines[i].sidenum].sector-sectors;
+            for (s = -1; (s = P_FindSectorFromLineTag(lines+i,s)) >= 0;)
+              P_AddFakeFloor(&sectors[s], &sectors[sec], lines+i, FF_EXISTS|FF_RENDERALL|FF_NOSHADE|FF_TRANSLUCENT);
+            break;
+          case 302: // walk through solid Tails 04-15-2001
+            sec = sides[*lines[i].sidenum].sector-sectors;
+            for (s = -1; (s = P_FindSectorFromLineTag(lines+i,s)) >= 0;)
+              P_AddFakeFloor(&sectors[s], &sectors[sec], lines+i, FF_EXISTS|FF_RENDERALL|FF_NOSHADE|FF_CUTLEVEL);
+            break;
+#endif
         // killough 3/16/98: Add support for setting
         // floor lighting independently (e.g. lava)
       case 213:
