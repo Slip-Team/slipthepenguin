@@ -1242,7 +1242,7 @@ mobjinfo_t original_mobjinfo[NUMMOBJTYPES] = {
     S_NULL,   // meleestate
     S_PLAY_ATK1,    // missilestate
     S_PLAY_DIE1,    // deathstate
-    S_PLAY_XDIE1,   // xdeathstate
+    S_NULL,   // xdeathstate
     sfx_pldeth,   // deathsound
     0,    // speed
     16*FRACUNIT,    // radius
