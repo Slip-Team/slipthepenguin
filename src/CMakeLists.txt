@@ -308,7 +308,7 @@ if (WIN32)
     add_custom_command(TARGET nugget-doom-exe POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         "$<TARGET_FILE_DIR:nugget-doom-exe>/$<TARGET_FILE_NAME:nugget-doom-exe>"
-        "$<TARGET_FILE_DIR:nugget-doom-exe>/nugget-doom.exe")
+        "$<TARGET_FILE_DIR:nugget-doom-exe>/slip.exe")
 endif()
 
 # Files to package in our distribution.
@@ -324,7 +324,7 @@ if(WIN32)
         install(TARGETS nugget-doom nugget-doom-setup RUNTIME DESTINATION .)
     endif()
     install(FILES "$<TARGET_FILE_DIR:nugget-doom-com>/nugget-doom.com"
-                  "$<TARGET_FILE_DIR:nugget-doom-exe>/nugget-doom.exe"
+                  "$<TARGET_FILE_DIR:nugget-doom-exe>/slip.exe"
             DESTINATION .)
 else()
     install(TARGETS nugget-doom nugget-doom-setup RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
