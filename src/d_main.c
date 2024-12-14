@@ -535,7 +535,7 @@ void D_DoAdvanceDemo(void)
             }
             else
             {
-                pagetic = 170;
+                pagetic = 140;
             }
             gamestate = GS_DEMOSCREEN;
             pagename = "TITLEPIC";
@@ -549,15 +549,15 @@ void D_DoAdvanceDemo(void)
             }
             break;
         case 1:
-            G_DeferedPlayDemo("DEMO1");
+            G_DeferedPlayDemo("TITLEDEM");
             break;
         case 2:
             pagetic = 200;
             gamestate = GS_DEMOSCREEN;
-            pagename = "CREDIT";
+            pagename = "BLACK";
             break;
         case 3:
-            G_DeferedPlayDemo("DEMO2");
+            G_DeferedPlayDemo("DEMO1");
             break;
         case 4:
             gamestate = GS_DEMOSCREEN;
