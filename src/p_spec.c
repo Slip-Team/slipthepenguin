@@ -1401,13 +1401,13 @@ void P_CrossSpecialLine(line_t *line, int side, mobj_t *thing, boolean bossactio
         line->special = 0;
       break;
 
-    case 52:
+    //case 52:
       // EXIT!
 
       // killough 10/98: prevent zombies from exiting levels
-      if (bossaction || (!(thing->player && thing->player->health <= 0 && !comp[comp_zombie])))
-        G_ExitLevel ();
-      break;
+      //if (bossaction || (!(thing->player && thing->player->health <= 0 && !comp[comp_zombie])))
+        //G_ExitLevel ();
+      //break;
 
     case 53:
       // Perpetual Platform Raise
@@ -2649,6 +2649,11 @@ void P_SpawnSpecials (void)
         // killough 3/7/98:
         // support for drawn heights coming from different sector
       case 242:
+        sec = sides[*lines[i].sidenum].sector-sectors;
+        for (s = -1; (s = P_FindSectorFromLineTag(lines+i,s)) >= 0;)
+          sectors[s].heightsec = sec;
+        break;
+	case 52:
         sec = sides[*lines[i].sidenum].sector-sectors;
         for (s = -1; (s = P_FindSectorFromLineTag(lines+i,s)) >= 0;)
           sectors[s].heightsec = sec;
