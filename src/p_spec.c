@@ -1013,7 +1013,7 @@ int P_CheckTag(line_t *line)
     case 208:
     case 207:
     case 11:  // Exits
-    case 52:
+    //case 52:
     case 197:
     case 51:
     case 124:
