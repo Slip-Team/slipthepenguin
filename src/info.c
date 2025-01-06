@@ -2108,7 +2108,7 @@ mobjinfo_t original_mobjinfo[NUMMOBJTYPES] = {
     100,    // mass
     20,   // damage
     sfx_None,   // activesound
-    MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF|MF_BOUNCES,   // flags
+    MF_NOBLOCKMAP|MF_MISSILE|MF_DROPOFF,   // flags
     S_NULL    // raisestate
   },
 
