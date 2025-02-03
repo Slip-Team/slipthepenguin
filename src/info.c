@@ -3456,11 +3456,11 @@ mobjinfo_t original_mobjinfo[NUMMOBJTYPES] = {
     sfx_None,   // deathsound
     0,    // speed
     16*FRACUNIT,    // radius
-    16*FRACUNIT,    // height
+    1*FRACUNIT,    // height
     100,    // mass
     0,    // damage
     sfx_None,   // activesound
-    MF_SOLID,   // flags
+    MF_SOLID|MF_NOSECTOR,   // flags
     S_NULL    // raisestate
   },
 
