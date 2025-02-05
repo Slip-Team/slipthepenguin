@@ -1403,7 +1403,7 @@ void P_CrossSpecialLine(line_t *line, int side, mobj_t *thing, boolean bossactio
 
     //case 52:
       // EXIT!
-
+//No longer used ZappaFurious
       // killough 10/98: prevent zombies from exiting levels
       //if (bossaction || (!(thing->player && thing->player->health <= 0 && !comp[comp_zombie])))
         //G_ExitLevel ();
