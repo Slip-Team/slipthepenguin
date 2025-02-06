@@ -186,7 +186,7 @@ typedef struct {
 typedef struct {
   short x;
   short y;
-  short angle;
+  long angle;
   short type;
   short options;
 } mapthing_t;
