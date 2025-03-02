@@ -186,9 +186,10 @@ typedef struct {
 typedef struct {
   short x;
   short y;
-  long angle;
+  short angle;
   short type;
-  short options;
+  unsigned short options;
+      short z;//ZF Thanks SSNTails!
 } mapthing_t;
 
 #endif // __DOOMDATA__
