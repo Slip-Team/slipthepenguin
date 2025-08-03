@@ -188,8 +188,8 @@ typedef struct {
   short y;
   short angle;
   short type;
-  unsigned short options;
-      short z;//ZF Thanks SSNTails!
+  short options;
+  short z;//ZF Thanks SSNTails!
 } mapthing_t;
 
 #endif // __DOOMDATA__
